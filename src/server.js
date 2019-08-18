@@ -5,12 +5,17 @@ const engine = require('ejs-mate');
 const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
+const config = require('./config/config');
+const glob = require('glob');
 
 //Init
 const { mongoose } = require('./database');
 const app = express();
-//require('./passport/local-auth');
 
+var models = glob.sync(config.root + '/app/models/*.js');
+models.forEach(function (model) {
+  require(model);
+});
 
 //Settings
 app.set('port', process.env.PORT || 3000);
